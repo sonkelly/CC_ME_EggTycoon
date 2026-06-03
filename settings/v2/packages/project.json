@@ -1,0 +1,48 @@
+{
+  "__version__": "1.0.6",
+  "general": {
+    "designResolution": {
+      "fitHeight": true,
+      "fitWidth": false
+    }
+  },
+  "layer": [
+    {
+      "name": "BGs",
+      "value": 1
+    },
+    {
+      "name": "Elements",
+      "value": 2
+    },
+    {
+      "name": "TopElements",
+      "value": 4
+    }
+  ],
+  "sorting-layer": {
+    "layers": [
+      {
+        "id": 0,
+        "name": "default",
+        "value": 0
+      },
+      {
+        "id": 1,
+        "name": "Elements",
+        "value": 1
+      },
+      {
+        "id": 2,
+        "name": "Elements_1",
+        "value": 2
+      },
+      {
+        "id": 3,
+        "name": "Elements_2",
+        "value": 3
+      }
+    ],
+    "increaseId": 3
+  }
+}
