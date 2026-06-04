@@ -1,0 +1,215 @@
+import { _decorator, Component, Node, Vec3, tween, randomRange } from 'cc';
+
+const { ccclass, property } = _decorator;
+
+enum ChickenState {
+    Idle,
+    GoToWater,
+    Drink,
+    GoToNest,
+    LayEgg,
+}
+
+@ccclass('ChickenController')
+export class ChickenController extends Component {
+
+    waterPoint: Node = null!;
+    nestPoint: Node = null!;
+    SPEED = 160;
+
+
+    private state: ChickenState = ChickenState.Idle;
+
+    private isBusy = false;
+
+    init(waterPoint, nestPoint) {
+        this.waterPoint = waterPoint
+        this.nestPoint = nestPoint
+        this.changeState(ChickenState.GoToWater);
+    }
+
+    private changeState(state: ChickenState): void {
+
+        this.state = state;
+
+        switch (state) {
+
+            case ChickenState.GoToWater:
+                this.goToWater();
+                break;
+
+            case ChickenState.Drink:
+                this.drink();
+                break;
+
+            case ChickenState.GoToNest:
+                this.goToNest();
+                break;
+
+            case ChickenState.LayEgg:
+                this.layEgg();
+                break;
+        }
+    }
+
+    // ---------------------
+    // GO WATER
+    // ---------------------
+
+    private goToWater(): void {
+
+        if (this.isBusy) return;
+
+        this.isBusy = true;
+
+        const pos = this.randomAround(
+            this.waterPoint.worldPosition,
+            30
+        );
+
+        this.moveTo(pos, () => {
+
+            this.isBusy = false;
+
+            this.changeState(
+                ChickenState.Drink
+            );
+        });
+    }
+
+    // ---------------------
+    // DRINK
+    // ---------------------
+
+    private drink(): void {
+
+        this.scheduleOnce(() => {
+
+            this.changeState(
+                ChickenState.GoToNest
+            );
+
+        }, randomRange(1, 2));
+    }
+
+    // ---------------------
+    // GO NEST
+    // ---------------------
+
+    private goToNest(): void {
+
+        if (this.isBusy) return;
+
+        this.isBusy = true;
+
+        const pos = this.randomAround(
+            this.nestPoint.worldPosition,
+            40
+        );
+
+        this.moveTo(pos, () => {
+
+            this.isBusy = false;
+
+            this.changeState(
+                ChickenState.LayEgg
+            );
+        });
+    }
+
+    // ---------------------
+    // LAY EGG
+    // ---------------------
+
+    private layEgg(): void {
+
+        this.scheduleOnce(() => {
+
+            this.spawnEgg();
+
+            this.changeState(
+                ChickenState.GoToWater
+            );
+
+        }, randomRange(2, 4));
+    }
+
+    // ---------------------
+    // MOVE
+    // ---------------------
+
+    private moveTo(
+        worldPos: Vec3,
+        complete?: Function
+    ): void {
+
+        const localPos =
+            this.node.parent.inverseTransformPoint(
+                new Vec3(),
+                worldPos
+            );
+
+        const distance =
+            Vec3.distance(
+                this.node.position,
+                localPos
+            );
+
+
+        const duration =
+            distance / this.SPEED;
+
+        this.flip(localPos);
+
+        tween(this.node)
+            .to(duration, {
+                position: localPos
+            })
+            .call(() => {
+                complete?.();
+            })
+            .start();
+    }
+
+    private flip(target: Vec3): void {
+
+        const scale = this.node.scale.clone();
+
+        if (target.x > this.node.position.x) {
+            scale.x = -Math.abs(scale.x);
+        }
+        else {
+            scale.x = Math.abs(scale.x);
+        }
+
+        this.node.setScale(scale);
+    }
+
+    // ---------------------
+    // EGG
+    // ---------------------
+
+    private spawnEgg(): void {
+
+        console.log("Spawn Egg");
+
+        // TODO:
+        // FarmController.addEgg(1)
+    }
+
+    // ---------------------
+    // RANDOM POS
+    // ---------------------
+
+    private randomAround(
+        center: Vec3,
+        radius: number
+    ): Vec3 {
+
+        return new Vec3(
+            center.x + randomRange(-radius, radius),
+            center.y + randomRange(-radius, radius),
+            center.z
+        );
+    }
+}

@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "8402432a-fd4d-4660-a458-12d396bf4fd8",
+  "uuid": "eeb35c5a-574d-4cb5-a41b-86009e01ebf8",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "StageItem"
+    "syncNodeName": "Chicken"
   }
 }

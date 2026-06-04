@@ -12,12 +12,16 @@
       "value": 1
     },
     {
-      "name": "Elements",
+      "name": "Elements_1",
       "value": 2
     },
     {
-      "name": "TopElements",
+      "name": "Elements_2",
       "value": 4
+    },
+    {
+      "name": "Elements_3",
+      "value": 8
     }
   ],
   "sorting-layer": {

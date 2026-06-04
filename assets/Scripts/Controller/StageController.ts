@@ -1,5 +1,6 @@
-import { _decorator, Component, instantiate, Node, Prefab } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab, profiler } from 'cc';
 import Defines from '../Common/Defines';
+import { ChickenFarmController } from './ChickenFarmController';
 const { ccclass, property } = _decorator;
 
 @ccclass('StageController')
@@ -9,6 +10,7 @@ export class StageController extends Component {
     @property(Prefab) preStage: Prefab = null;
 
     start() {
+        profiler.showStats();
         this.spawnStage()
     }
 
@@ -17,6 +19,10 @@ export class StageController extends Component {
             let nStage = instantiate(this.preStage)
             if (nStage) {
                 nStage.parent = this.nContent
+                let stageController = nStage.getComponent(ChickenFarmController)
+                if (stageController) {
+                    stageController.initFarmData(null)
+                }
             }
         });
     }
