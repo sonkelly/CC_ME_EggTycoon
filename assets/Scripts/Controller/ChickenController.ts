@@ -62,10 +62,7 @@ export class ChickenController extends Component {
 
         this.isBusy = true;
 
-        const pos = this.randomAround(
-            this.waterPoint.worldPosition,
-            30
-        );
+        const pos = this.randomAround(this.waterPoint.worldPosition, 30, 30);
 
         this.moveTo(pos, () => {
 
@@ -97,23 +94,13 @@ export class ChickenController extends Component {
     // ---------------------
 
     private goToNest(): void {
-
         if (this.isBusy) return;
-
         this.isBusy = true;
-
-        const pos = this.randomAround(
-            this.nestPoint.worldPosition,
-            40
-        );
+        const pos = this.randomAround(this.nestPoint.worldPosition, 20, -10);
 
         this.moveTo(pos, () => {
-
             this.isBusy = false;
-
-            this.changeState(
-                ChickenState.LayEgg
-            );
+            this.changeState(ChickenState.LayEgg);
         });
     }
 
@@ -201,10 +188,8 @@ export class ChickenController extends Component {
     // RANDOM POS
     // ---------------------
 
-    private randomAround(
-        center: Vec3,
-        radius: number
-    ): Vec3 {
+    private randomAround(center: Vec3, radius: number, width: number): Vec3 {
+        return new Vec3(center.x - width / 2, center.y + randomRange(-radius, radius), center.z);
 
         return new Vec3(
             center.x + randomRange(-radius, radius),

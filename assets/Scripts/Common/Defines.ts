@@ -1,6 +1,8 @@
 import { _decorator } from 'cc';
 export default class Defines {
-    public static gameSpeed = 97;
+    public static GameDefine = {
+        LEVEL_ACTIVE_BOOST: 1
+    };
     public static Stages = [
         {
             name: "Stage 1",
@@ -49,45 +51,30 @@ export enum GamePlatform {
 export interface ChickenConfig {
     id: number;
     level: number;
-
     moveSpeed: number;
-
     eggInterval: number;      // thời gian đẻ 1 trứng
     eggValue: number;         // giá trị 1 trứng
-
     lifeTime?: number;
 }
 
 export interface ChickenData {
     uid: string;
-
     configId: number;
-
     x: number;
     y: number;
-
     bornTime: number;
-
     nextEggTime: number;
 }
 
 export interface FarmData {
     id: number;
-
     level: number;
-
     unlock: boolean;
-
     maxChicken: number;
-
     chickenSpawnInterval: number;
-
     nextSpawnTime: number;
-
     chickens: number
-
     incomePerSecond: number;
-
     upgradeCost: number;
 }
 

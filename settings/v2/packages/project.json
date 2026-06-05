@@ -3,7 +3,9 @@
   "general": {
     "designResolution": {
       "fitHeight": true,
-      "fitWidth": false
+      "fitWidth": false,
+      "width": 1280,
+      "height": 720
     }
   },
   "layer": [
@@ -22,6 +24,10 @@
     {
       "name": "Elements_3",
       "value": 8
+    },
+    {
+      "name": "GUI",
+      "value": 512
     }
   ],
   "sorting-layer": {

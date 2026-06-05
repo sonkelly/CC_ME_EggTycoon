@@ -9,8 +9,11 @@ const DataManager = {
   GameData: {
     music: true,
     sound: true,
-    coin: 0,
     localLanguage: "ru",
+
+    coin: 0,
+    level: 1,
+
   },
   storeGameData: function (key = null, value = null) {
     let data = JSON.stringify(DataManager.GameData);
@@ -49,6 +52,13 @@ const DataManager = {
 
   getCoin() {
     return DataManager.GameData.coin;
+  },
+  getLevel() {
+    return DataManager.GameData.level;
+  },
+  updateLevel() {
+    DataManager.GameData.level += 1;
+    DataManager.storeGameData("level", DataManager.GameData.level)
   },
 
   getMusic() {
