@@ -1,4 +1,4 @@
-import DataManager from "../Common/DataManager";
+import RemoteData from "../DataManager/RemoteData";
 import { BaseSDk } from "./BaseSDK";
 
 export class YandexSDK extends BaseSDk {
@@ -29,9 +29,9 @@ export class YandexSDK extends BaseSDk {
 
             YaGames.init()
                 .then(ysdk => {
-                    window.ysdk = ysdk;
+                    (window as any).ysdk = ysdk;
                     this.SDK = ysdk;
-                    DataManager.FetchRemoteConfig(()=>{
+                    RemoteData.FetchRemoteConfig(() => {
                         cb && cb(this);
                         this.showInterstitialAds({});
                     })
