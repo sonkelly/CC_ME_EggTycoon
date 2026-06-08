@@ -1,14 +1,9 @@
 import { _decorator, Component, Node, Vec3, tween, randomRange } from 'cc';
+import { ChickenFarmController } from './ChickenFarmController';
 
 const { ccclass, property } = _decorator;
 
-enum ChickenState {
-    Idle,
-    GoToWater,
-    Drink,
-    GoToNest,
-    LayEgg,
-}
+enum ChickenState { Idle, GoToWater, Drink, GoToNest, LayEgg, }
 
 @ccclass('ChickenController')
 export class ChickenController extends Component {
@@ -19,12 +14,14 @@ export class ChickenController extends Component {
 
 
     private state: ChickenState = ChickenState.Idle;
+    private farmController: ChickenFarmController = null;
 
     private isBusy = false;
 
-    init(waterPoint, nestPoint) {
+    initChicken(waterPoint, nestPoint, farmController) {
         this.waterPoint = waterPoint
         this.nestPoint = nestPoint
+        this.farmController = farmController
         this.changeState(ChickenState.GoToWater);
     }
 
@@ -125,29 +122,12 @@ export class ChickenController extends Component {
     // MOVE
     // ---------------------
 
-    private moveTo(
-        worldPos: Vec3,
-        complete?: Function
-    ): void {
+    private moveTo(worldPos: Vec3, complete?: Function): void {
 
-        const localPos =
-            this.node.parent.inverseTransformPoint(
-                new Vec3(),
-                worldPos
-            );
-
-        const distance =
-            Vec3.distance(
-                this.node.position,
-                localPos
-            );
-
-
-        const duration =
-            distance / this.SPEED;
-
+        const localPos = this.node.parent.inverseTransformPoint(new Vec3(), worldPos);
+        const distance = Vec3.distance(this.node.position, localPos);
+        const duration = distance / this.SPEED;
         this.flip(localPos);
-
         tween(this.node)
             .to(duration, {
                 position: localPos
@@ -164,8 +144,7 @@ export class ChickenController extends Component {
 
         if (target.x > this.node.position.x) {
             scale.x = -Math.abs(scale.x);
-        }
-        else {
+        } else {
             scale.x = Math.abs(scale.x);
         }
 
@@ -177,9 +156,8 @@ export class ChickenController extends Component {
     // ---------------------
 
     private spawnEgg(): void {
-
         console.log("Spawn Egg");
-
+        this.farmController.onChickenLayEgg(1)
         // TODO:
         // FarmController.addEgg(1)
     }

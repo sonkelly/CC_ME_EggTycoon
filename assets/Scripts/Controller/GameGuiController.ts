@@ -4,7 +4,7 @@ import PlayerData from '../DataManager/PlayerData';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameGuiController')
-export class GameGuiController extends Component {
+export class GameGuiController extends Component    {
     @property(Node) nBoostStart: Node = null;
 
     @property(Label) lbLevel: Label = null;

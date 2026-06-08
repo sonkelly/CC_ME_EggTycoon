@@ -1,4 +1,4 @@
-import { _decorator, Component, director, Enum, Node } from 'cc';
+import { _decorator, Component, director, Enum, Node, profiler } from 'cc';
 import DataManager from './DataManager/DataManager';
 import PlatformManager from './Platforms/PlatformManager';
 import { GamePlatform } from './Common/Defines';
@@ -9,6 +9,7 @@ export class InitScene extends Component {
     @property({ type: Enum(GamePlatform) }) Platform: GamePlatform = GamePlatform.YANDEX;
 
     protected onLoad(): void {
+        profiler.showStats();
         PlatformManager.initPlatform(this.Platform, () => {
             DataManager.initAllData(() => {
                 director.loadScene("GamePlay");

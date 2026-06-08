@@ -1,6 +1,9 @@
-import { _decorator, Component, instantiate, Label, Node, Prefab, randomRange, tween, Vec3 } from 'cc';
-import { FarmData } from '../Common/Defines';
+import { _decorator, Animation, Component, Label, Node, tween, Vec3 } from 'cc';
+import Defines, { FarmData, PoolType } from '../Common/Defines';
 import { ChickenController } from './ChickenController';
+import { WarehouseController } from './WarehouseController';
+import { PoolManager } from '../Pool/PoolManager';
+import { ToastManager } from '../Toast/ToastManager';
 const { ccclass, property } = _decorator;
 
 
@@ -8,7 +11,6 @@ const { ccclass, property } = _decorator;
 @ccclass('ChickenFarmController')
 export class ChickenFarmController extends Component {
 
-    @property(Prefab) preChicken: Prefab = null!;
     @property(Node) waterPoint: Node = null!;
     @property(Node) nestPoint: Node = null!;
 
@@ -16,31 +18,53 @@ export class ChickenFarmController extends Component {
     @property(Node) chickenRoot: Node = null!;
     @property(Label) lbTitle: Label = null!;
 
+    @property(Animation) animTransferEgg: Animation = null!;
+
     private farmData: FarmData = null!;
     private chickenList: ChickenController[] = [];
+    private farmEggStorage = 0;
+
+
 
     public initFarmData(data: FarmData): void {
         this.farmData = data;
-        this.lbTitle.string = this.farmData.id.toString()
+        this.lbTitle.string = this.farmData.id.toString();
         // this.loadChickens();
     }
 
     private loadChickens(): void {
         this.clearAllChicken();
         for (let i = 0; i < this.farmData.chickens; i++) {
-            const node = instantiate(this.preChicken);
+            const node = PoolManager.Instance.get(PoolType.Chicken)
             node.parent = this.node;
             const chicken = node.getComponent(ChickenController);
-            chicken.init(this.waterPoint, this.nestPoint);
+            chicken.initChicken(this.waterPoint, this.nestPoint, this);
             this.chickenList.push(chicken);
         }
+    }
+
+    public onChickenLayEgg(amount: number): void {
+        ToastManager.Instance.showEgg(amount, this.nestPoint.worldPosition)
+        this.farmEggStorage += amount;
+        if (this.farmEggStorage >= Defines.GameDefine.FARM_MAX_EGG) {
+            this.transportEggToWarehouse();
+        }
+    }
+
+    private transportEggToWarehouse(): void {
+        if (this.farmEggStorage <= 0) {
+            return;
+        }
+        this.animTransferEgg.play();
+        console.log("Transport Egg");
+        WarehouseController.Instance.receiveEgg(this.farmEggStorage);
+        this.farmEggStorage = 0;
     }
 
     private clearAllChicken(): void {
         this.chickenList.forEach(v => { v.node.destroy(); });
         this.chickenList.length = 0;
     }
-
 
     public eggNestOnClick() {
         this.spawnChicken()
@@ -66,7 +90,7 @@ export class ChickenFarmController extends Component {
             .call(() => {
                 const chicken = chickenNode.getComponent(ChickenController);
                 // chicken.startAI();
-                chicken.init(this.waterPoint, this.nestPoint)
+                chicken.initChicken(this.waterPoint, this.nestPoint, this)
             })
             .start();
     }
@@ -76,8 +100,9 @@ export class ChickenFarmController extends Component {
     }
 
     public spawnChicken(): void {
-        const chickenNode = instantiate(this.preChicken);
+        const chickenNode = PoolManager.Instance.get(PoolType.Chicken);
         chickenNode.parent = this.node;
+        chickenNode.active = true;
         // spawn tại quả trứng
         chickenNode.setWorldPosition(this.eggNest.worldPosition);
         // bay vào giữa chuồng

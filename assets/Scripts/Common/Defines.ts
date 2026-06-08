@@ -1,7 +1,8 @@
 import { _decorator } from 'cc';
 export default class Defines {
     public static GameDefine = {
-        LEVEL_ACTIVE_BOOST: 1
+        LEVEL_ACTIVE_BOOST: 1,
+        FARM_MAX_EGG: 20
     };
     public static Stages = [
         {
@@ -82,3 +83,21 @@ export interface PlayerFarmData {
     farms: FarmData[];
 }
 
+
+export enum CarState {
+    Idle,
+    MoveToSale,
+    Selling,
+    Complete
+}
+
+
+export enum PoolType {
+    Chicken = "Chicken",
+    Car = "Car",
+    Egg = "Egg",
+    Coin = "Coin",
+    Fx = "Fx",
+    ToastEgg = "ToastEgg",
+    ToastMoney = "ToastMoney"
+}

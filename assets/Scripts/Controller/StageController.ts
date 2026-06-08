@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Node, Prefab, profiler } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab } from 'cc';
 import Defines, { FarmData } from '../Common/Defines';
 import { ChickenFarmController } from './ChickenFarmController';
 const { ccclass, property } = _decorator;
@@ -8,11 +8,6 @@ export class StageController extends Component {
 
     @property(Node) nContent: Node = null;
     @property(Prefab) preStage: Prefab = null;
-
-    start() {
-        profiler.showStats();
-        this.spawnStage()
-    }
 
     public spawnStage() {
         Defines.Stages.forEach((stage, index) => {
