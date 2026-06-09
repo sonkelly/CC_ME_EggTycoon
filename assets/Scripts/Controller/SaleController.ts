@@ -1,4 +1,5 @@
-import { EventManager } from "../Exts/EventManager";
+import Defines from "../Common/Defines";
+import PlayerData from "../DataManager/PlayerData";
 
 export class SaleController {
 
@@ -13,24 +14,10 @@ export class SaleController {
         return this._instance;
     }
 
-    private gold = 0;
 
-    private eggPrice = 5;
-
-    public sellEgg(amount: number): void {
-
-        const income =
-            amount * this.eggPrice;
-
-        this.gold += income;
-
-        EventManager.emit(
-            "UPDATE_GOLD",
-            this.gold
-        );
-    }
-
-    public getGold(): number {
-        return this.gold;
+    public sellEgg(amount: number): number {
+        const income = amount * Defines.GameDefine.EGG_PRICE;
+        PlayerData.addCoin(income)
+        return income;
     }
 }

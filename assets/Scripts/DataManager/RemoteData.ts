@@ -1,4 +1,4 @@
-import { sys } from "cc";
+
 
 const RemoteData = {
     version: "001",

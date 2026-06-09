@@ -1,9 +1,9 @@
-import { _decorator, Component, Node, Prefab, instantiate } from 'cc';
+import { _decorator, Component, Node, Prefab, instantiate, Label } from 'cc';
 import { WarehouseModel } from '../models/WarehouseModel';
 import { SellOrder } from '../models/SellOrder';
 import { CarController } from './CarController';
 import { PoolManager } from '../Pool/PoolManager';
-import { PoolType } from '../Common/Defines';
+import Defines, { PoolType } from '../Common/Defines';
 
 const { ccclass, property } = _decorator;
 
@@ -22,74 +22,47 @@ export class WarehouseController extends Component {
 
     protected onLoad(): void {
         WarehouseController._instance = this;
+        this.schedule(this.spawnCar, Defines.GameDefine.TIME_SPAWN_CAR);
     }
 
-    @property(Node)
-    public warehouse: Node = null!;
+    @property(Node) public warehouse: Node = null!;
+    @property(Node) public saleTarget: Node = null!;
+    @property(Node) public toastMoneyTarget: Node = null!;
+    @property(Label) public lbCountEgg: Label = null!;
 
-    @property(Node)
-    public saleTarget: Node = null!;
+    @property public spawnInterval = 2;
 
-    @property
-    public spawnInterval = 0.5;
+    private model = new WarehouseModel();
 
-    @property
-    public truckCapacity = 50;
-
-    private model =
-        new WarehouseModel();
-
-    private sellQueue: SellOrder[] = [];
-
-    private spawnTimer = 0;
+    public setCountEgg(): void {
+        this.lbCountEgg.string = this.model.getEggCount().toString();
+    }
 
     public receiveEgg(amount: number): void {
         this.model.addEgg(amount);
-        this.generateOrders();
-    }
-
-    private generateOrders(): void {
-        while (this.model.getEggCount() >= this.truckCapacity) {
-            this.model.removeEgg(this.truckCapacity);
-
-            this.sellQueue.push(new SellOrder(this.truckCapacity));
-        }
-    }
-
-    update(dt: number): void {
-
-        if (this.sellQueue.length <= 0) {
-            return;
-        }
-
-        this.spawnTimer += dt;
-
-        if (this.spawnTimer >= this.spawnInterval) {
-            this.spawnTimer = 0;
-            this.spawnCar();
-        }
+        this.setCountEgg();
     }
 
     private spawnCar(): void {
-        console.log("SPAWN CAR")
-        const order = this.sellQueue.shift();
+        const eggCount = this.model.getEggCount();
+        this.model.removeEgg(eggCount);
+        this.setCountEgg();
 
-        if (!order) return;
-        const carNode = PoolManager.Instance.get(PoolType.Car)
+        const order = new SellOrder(eggCount);
+        const carNode = PoolManager.Instance.get(PoolType.Car);
+
         carNode.parent = this.node;
         carNode.active = true;
         carNode.setWorldPosition(this.warehouse.worldPosition);
+
         const car = carNode.getComponent(CarController);
 
         if (!car) return;
-        car.initCar(this.warehouse, this.saleTarget, order);
+        car.initCar(this.warehouse, this.saleTarget, order, this.toastMoneyTarget);
     }
 
     public getEggCount(): number {
         return this.model.getEggCount();
     }
 
-    public getWaitingOrders(): number {
-        return this.sellQueue.length;
-    }
 }

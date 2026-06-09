@@ -1,6 +1,8 @@
 import { sys } from "cc";
 import { GamePlatform } from "../Common/Defines";
 import PlatformManager from "../Platforms/PlatformManager";
+import CryptoJS from 'crypto-js';
+
 
 const MainData = {
   _tryLoadData: 0,

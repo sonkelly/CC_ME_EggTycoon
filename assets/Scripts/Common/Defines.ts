@@ -2,7 +2,11 @@ import { _decorator } from 'cc';
 export default class Defines {
     public static GameDefine = {
         LEVEL_ACTIVE_BOOST: 1,
-        FARM_MAX_EGG: 20
+        FARM_MAX_EGG: 20,
+        EGG_PRICE: 5,
+        TIME_SPAWN_CAR: 3,
+        TIME_CAR_TO_SALE: 5,
+        TIME_CHICKEN_MOVE: 3
     };
     public static Stages = [
         {

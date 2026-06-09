@@ -62,12 +62,8 @@ export class ChickenController extends Component {
         const pos = this.randomAround(this.waterPoint.worldPosition, 30, 30);
 
         this.moveTo(pos, () => {
-
             this.isBusy = false;
-
-            this.changeState(
-                ChickenState.Drink
-            );
+            this.changeState(ChickenState.Drink);
         });
     }
 
@@ -78,10 +74,7 @@ export class ChickenController extends Component {
     private drink(): void {
 
         this.scheduleOnce(() => {
-
-            this.changeState(
-                ChickenState.GoToNest
-            );
+            this.changeState(ChickenState.GoToNest);
 
         }, randomRange(1, 2));
     }
@@ -126,7 +119,8 @@ export class ChickenController extends Component {
 
         const localPos = this.node.parent.inverseTransformPoint(new Vec3(), worldPos);
         const distance = Vec3.distance(this.node.position, localPos);
-        const duration = distance / this.SPEED;
+        // const duration = distance / this.SPEED;
+        const duration = 5;
         this.flip(localPos);
         tween(this.node)
             .to(duration, {

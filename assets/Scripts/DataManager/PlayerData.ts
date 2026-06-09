@@ -1,4 +1,6 @@
 import { sys } from "cc";
+import CryptoJS from 'crypto-js';
+
 
 const PlayerData = {
     _tryLoadData: 0,

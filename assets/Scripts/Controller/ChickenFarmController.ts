@@ -22,7 +22,6 @@ export class ChickenFarmController extends Component {
 
     private farmData: FarmData = null!;
     private chickenList: ChickenController[] = [];
-    private farmEggStorage = 0;
 
 
 
@@ -45,20 +44,13 @@ export class ChickenFarmController extends Component {
 
     public onChickenLayEgg(amount: number): void {
         ToastManager.Instance.showEgg(amount, this.nestPoint.worldPosition)
-        this.farmEggStorage += amount;
-        if (this.farmEggStorage >= Defines.GameDefine.FARM_MAX_EGG) {
-            this.transportEggToWarehouse();
-        }
+        this.transportEggToWarehouse(amount);
     }
 
-    private transportEggToWarehouse(): void {
-        if (this.farmEggStorage <= 0) {
-            return;
-        }
+    private transportEggToWarehouse(amount): void {
         this.animTransferEgg.play();
         console.log("Transport Egg");
-        WarehouseController.Instance.receiveEgg(this.farmEggStorage);
-        this.farmEggStorage = 0;
+        WarehouseController.Instance.receiveEgg(amount);
     }
 
     private clearAllChicken(): void {
