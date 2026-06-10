@@ -1,10 +1,4 @@
-import {
-    _decorator,
-    Component,
-    tween,
-    Vec3,
-    UIOpacity
-} from 'cc';
+import { _decorator, Component, tween, UIOpacity, randomRange } from 'cc';
 
 import { PoolManager } from '../Pool/PoolManager';
 import { PoolType } from '../Common/Defines';
@@ -23,6 +17,10 @@ export class ToastController extends Component {
         opacity.opacity = 255;
 
         const startPos = this.node.position.clone();
+        startPos.x += randomRange(-50, 50);
+
+        this.node.setPosition(startPos);
+
 
         const endPos = startPos.clone();
 
@@ -32,14 +30,14 @@ export class ToastController extends Component {
             .parallel(
 
                 tween()
-                    .to(1, {
+                    .to(2, {
                         position: endPos
                     }),
 
-                tween(opacity)
-                    .to(1, {
-                        opacity: 0
-                    })
+                // tween(opacity)
+                //     .to(2, {
+                //         opacity: 0
+                //     })
             )
             .call(() => {
 

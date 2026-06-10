@@ -1,4 +1,8 @@
 import { _decorator } from 'cc';
+export const FARM_UNLOCK_COST = [0, 35000000, 80000000, 180000000, 400000000, 900000000, 2000000000, 4500000000, 10000000000, 22000000000];
+export const FARM_UNLOCK_LEVEL = [0, 5, 15, 20, 25, 30, 35, 40, 45, 55, 60];
+export const FARM_UNLOCK_TIME = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
 export default class Defines {
     public static GameDefine = {
         LEVEL_ACTIVE_BOOST: 1,
@@ -8,36 +12,87 @@ export default class Defines {
         TIME_CAR_TO_SALE: 5,
         TIME_CHICKEN_MOVE: 3
     };
+
     public static Stages = [
         {
+            id: 1,
             name: "Stage 1",
-            level: 1,
-            specialSlot: 10,
-            unlockCost: 50000
+            level: 0,
+            specialSlot: 15,
+            unlockCost: 0,
+            timeUnlock: 0
         },
         {
+            id: 2,
             name: "Stage 2",
-            level: 1,
-            specialSlot: 10,
-            unlockCost: 50000
+            level: 5,
+            specialSlot: 15,
+            unlockCost: 35000000,
+            timeUnlock: 0.5
         },
         {
-            name: "Stage 2",
-            level: 1,
-            specialSlot: 10,
-            unlockCost: 50000
+            id: 3,
+            name: "Stage 3",
+            level: 10,
+            specialSlot: 15,
+            unlockCost: 80000000,
+            timeUnlock: 1
         },
         {
-            name: "Stage 2",
-            level: 1,
-            specialSlot: 10,
-            unlockCost: 50000
+            id: 4,
+            name: "Stage 4",
+            level: 15,
+            specialSlot: 15,
+            unlockCost: 180000000,
+            timeUnlock: 1.5
         },
         {
-            name: "Stage 2",
-            level: 1,
-            specialSlot: 10,
-            unlockCost: 50000
+            id: 5,
+            name: "Stage 5",
+            level: 20,
+            specialSlot: 15,
+            unlockCost: 400000000,
+            timeUnlock: 2
+        },
+        {
+            id: 6,
+            name: "Stage 6",
+            level: 25,
+            specialSlot: 15,
+            unlockCost: 900000000,
+            timeUnlock: 2.5
+        },
+        {
+            id: 7,
+            name: "Stage 7",
+            level: 30,
+            specialSlot: 15,
+            unlockCost: 2000000000,
+            timeUnlock: 3
+        },
+        {
+            id: 8,
+            name: "Stage 8",
+            level: 35,
+            specialSlot: 15,
+            unlockCost: 4500000000,
+            timeUnlock: 3.5
+        },
+        {
+            id: 9,
+            name: "Stage 9",
+            level: 40,
+            specialSlot: 15,
+            unlockCost: 10000000000,
+            timeUnlock: 4
+        },
+        {
+            id: 10,
+            name: "Stage 10",
+            level: 45,
+            specialSlot: 15,
+            unlockCost: 22000000000,
+            timeUnlock: 4.5
         }
     ]
 }
@@ -73,14 +128,20 @@ export interface ChickenData {
 
 export interface FarmData {
     id: number;
+    name: string;
     level: number;
-    unlock: boolean;
-    maxChicken: number;
-    chickenSpawnInterval: number;
-    nextSpawnTime: number;
-    chickens: number
-    incomePerSecond: number;
-    upgradeCost: number;
+    specialSlot: number;
+    unlockCost: number;
+    timeUnlock: number;
+}
+
+export interface FarmDataSave {
+    id: number;
+    current_level: number;
+    current_slot: number;
+    current_star: number;
+    current_chicken_star: boolean;
+    current_egg: number;
 }
 
 export interface PlayerFarmData {

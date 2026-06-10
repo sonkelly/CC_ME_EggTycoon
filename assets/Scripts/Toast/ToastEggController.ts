@@ -13,7 +13,7 @@ export class ToastEggController extends ToastController {
     protected poolType = PoolType.ToastEgg;
 
     public show(amount: number): void {
-        this.lbValue.string = `+${amount} Egg`;
+        this.lbValue.string = "+" + amount.toString();
         this.play();
     }
 }

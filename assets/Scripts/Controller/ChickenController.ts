@@ -58,13 +58,8 @@ export class ChickenController extends Component {
         if (this.isBusy) return;
 
         this.isBusy = true;
-
         const pos = this.randomAround(this.waterPoint.worldPosition, 30, 30);
-
-        this.moveTo(pos, () => {
-            this.isBusy = false;
-            this.changeState(ChickenState.Drink);
-        });
+        this.moveTo(pos, () => { this.isBusy = false; this.changeState(ChickenState.Drink); });
     }
 
     // ---------------------
@@ -72,10 +67,8 @@ export class ChickenController extends Component {
     // ---------------------
 
     private drink(): void {
-
         this.scheduleOnce(() => {
             this.changeState(ChickenState.GoToNest);
-
         }, randomRange(1, 2));
     }
 
@@ -87,11 +80,7 @@ export class ChickenController extends Component {
         if (this.isBusy) return;
         this.isBusy = true;
         const pos = this.randomAround(this.nestPoint.worldPosition, 20, -10);
-
-        this.moveTo(pos, () => {
-            this.isBusy = false;
-            this.changeState(ChickenState.LayEgg);
-        });
+        this.moveTo(pos, () => { this.isBusy = false; this.changeState(ChickenState.LayEgg); });
     }
 
     // ---------------------
@@ -99,16 +88,7 @@ export class ChickenController extends Component {
     // ---------------------
 
     private layEgg(): void {
-
-        this.scheduleOnce(() => {
-
-            this.spawnEgg();
-
-            this.changeState(
-                ChickenState.GoToWater
-            );
-
-        }, randomRange(2, 4));
+        this.scheduleOnce(() => { this.spawnEgg(); this.changeState(ChickenState.GoToWater); }, randomRange(2, 4));
     }
 
     // ---------------------

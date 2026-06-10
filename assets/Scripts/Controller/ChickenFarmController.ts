@@ -32,14 +32,14 @@ export class ChickenFarmController extends Component {
     }
 
     private loadChickens(): void {
-        this.clearAllChicken();
-        for (let i = 0; i < this.farmData.chickens; i++) {
-            const node = PoolManager.Instance.get(PoolType.Chicken)
-            node.parent = this.node;
-            const chicken = node.getComponent(ChickenController);
-            chicken.initChicken(this.waterPoint, this.nestPoint, this);
-            this.chickenList.push(chicken);
-        }
+        // this.clearAllChicken();
+        // for (let i = 0; i < this.farmData.chickens; i++) {
+        //     const node = PoolManager.Instance.get(PoolType.Chicken)
+        //     node.parent = this.node;
+        //     const chicken = node.getComponent(ChickenController);
+        //     chicken.initChicken(this.waterPoint, this.nestPoint, this);
+        //     this.chickenList.push(chicken);
+        // }
     }
 
     public onChickenLayEgg(amount: number): void {
